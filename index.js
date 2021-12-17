@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const koaStatic = require('koa-static');
 const path = require('path');
 const content = require('./util/content');
 const mimes = require('./util/mimes');
@@ -14,6 +15,7 @@ function parseMime(url) {
   extName = extName ? extName.slice(1) : 'unknown';
   return mimes[extName];
 }
+app.use(koaStatic(path.join(__dirname, staticPath)));
 
 app.use(async (ctx) => {
   // 静态资源目录在本地的绝对路径
@@ -41,7 +43,6 @@ app.use(async (ctx) => {
     ctx.body = _content;
   }
 });
-
 app.listen(port, () => {
   console.log(`[demo] static-server is starting at port ${port}`);
 });
